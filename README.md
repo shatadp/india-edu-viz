@@ -1,8 +1,8 @@
-# India Education & Population Viz — Setup (Windows)
+# India Education & Population Visualization
 
-This folder is a ready-to-go project for building an interactive visualization
-of India's 18–23 population and higher-education enrolment, with state "tank fill"
-charts broken down by social group.
+An interactive, offline-capable browser app that visualizes India's 18–23 age
+population and higher-education enrolment by state, with "tank fill" charts
+segmented by social group (SC / ST / OBC / Other).
 
 ## What's in here
 ```
@@ -10,59 +10,39 @@ india-edu-viz/
 ├─ data/
 │  ├─ population_18_23.csv        # cleaned, ready
 │  ├─ enrolment_social_group.csv  # cleaned, ready
-│  └─ india_states.geojson        # <-- YOU must add this (see step 4)
+│  └─ india_states.geojson        # state boundary shapes
 ├─ docs/
-│  └─ PRD.md                      # the full build spec for Claude Code
-├─ CLAUDE.md                      # project context Claude Code auto-reads
+│  └─ PRD.md                      # full product spec
+├─ src/                           # React + TypeScript source
 └─ README.md                      # this file
 ```
 
-## Step 1 — Install prerequisites (one time)
-1. **Node.js (LTS)** — download from nodejs.org, run the installer. This also installs `npm`.
-   - Verify in a terminal (PowerShell or Command Prompt): `node --version` and `npm --version`.
-2. **Claude Code** — install per Anthropic's current instructions for Windows. After install, verify with: `claude --version`.
-   - Note: Claude Code on Windows runs well inside **PowerShell** or **Windows Terminal**. WSL (Ubuntu) is also a great option if you have it.
+## Prerequisites
+- **Node.js (LTS)** — download from nodejs.org, run the installer.
+  Verify: `node --version` and `npm --version`.
 
-## Step 2 — Put this folder somewhere sensible
-e.g. `C:\Users\<you>\projects\india-edu-viz`
-
-## Step 3 — Launch Claude Code in this folder
-Open PowerShell, then:
+## Getting started
 ```powershell
-cd C:\Users\<you>\projects\india-edu-viz
-claude
-```
-Claude Code will read `CLAUDE.md` and you can then say:
-> Read docs/PRD.md and the two CSVs in data/, then scaffold the app described in the PRD. Start with Phase 1.
-
-## Step 4 — Add the India map file (required for the map visuals)
-The tank-fill and choropleth visuals need real state boundaries. Download an
-**India states GeoJSON or TopoJSON** and save it as:
-```
-data/india_states.geojson
-```
-Make sure it includes the modern set of states/UTs (Ladakh separate, J&K, and
-"Dadra & Nagar Haveli and Daman & Diu" merged). Then tell Claude Code:
-> The GeoJSON is in data/. Wire up the map and print any state names that don't match between the CSVs and the GeoJSON.
-
-## Step 5 — Build and run (Claude Code will set this up)
-Typical commands it will create:
-```powershell
+cd india-edu-viz
 npm install
-npm run dev      # opens a local dev server, usually http://localhost:5173
-npm run build    # produces an offline dist/ folder
+npm run dev        # opens dev server at http://localhost:5173
 ```
+
+## Production build (fully offline)
+```powershell
+npm run build      # produces dist/ folder
+npm run preview    # preview the production build locally
+```
+The `dist/` folder is self-contained — no network access required.
 
 ## Adding discipline / UG-PG data later
-The two tables you have only break down by **social group (SC/ST/OBC)**.
-When you get **discipline-wise** or **level (UG/PG)** data:
+The current datasets break down by **social group (SC / ST / OBC)**.
+When you have **discipline-wise** or **level (UG/PG)** data:
 1. Save it as a CSV in `data/` with the same shape: one row per state, columns
    ending in `_total` (and optionally `_male` / `_female`) per category.
-2. Tell Claude Code the filename and category columns; the PRD asks it to make
-   the category-split engine generic, so it should plug in without rewrites.
+2. Add a new `DatasetConfig` entry in `src/config/datasets.ts` naming the file
+   and its category columns. The category-split engine is generic, so new
+   datasets plug in without code changes.
 
-## Tips for working with Claude Code
-- Work in phases (the PRD is ordered). Ask it to complete and verify Phase 1 before Phase 2.
-- If a visual looks wrong, describe exactly what you see — like you did with the
-  "all bars stretch to 100%" bug. Precise symptoms get precise fixes.
-- Ask it to keep everything **offline** (bundle libraries, no CDN links).
+## Tech stack
+Vite + React + TypeScript + D3.js + PapaParse

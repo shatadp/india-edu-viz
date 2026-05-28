@@ -5,10 +5,10 @@ Build an interactive, browser-based web app that visualizes India's **population
 
 The app must run **fully offline** (no external CDN calls) once built. The user is on **Windows**.
 
-## 2. Tech stack (recommended — agent may adjust)
+## 2. Tech stack
 - **Vite + React + TypeScript** for the app shell.
 - **D3.js** for geo projection, scales, and the clip-mask tank fills.
-- **TopoJSON/GeoJSON** of Indian states for shapes (see §6 — the user must supply or download this; do not invent boundaries).
+- **TopoJSON/GeoJSON** of Indian states for shapes (see §6).
 - No backend. Data is loaded from local CSV/JSON in `/data`.
 - Bundle everything for offline use; `npm run build` should produce a self-contained `dist/` that opens via `index.html` or a local static server.
 
@@ -48,10 +48,10 @@ The app must run **fully offline** (no external CDN calls) once built. The user 
 - Responsive down to ~768px.
 - A bar in the UI must be **proportional** to its value (a past hand-built version had a CSS flexbox bug where every bar stretched to full width — verify proportionality explicitly).
 
-## 6. The map data (action required — explain to the user)
-You need an India states boundary file. Do NOT fabricate coordinates. Recommended sources to download manually and place in `/data/india_states.geojson`:
-- A standard India states GeoJSON/TopoJSON (search for an India states TopoJSON; ensure it includes the current set of states/UTs, incl. Ladakh and J&K split, and DNH & DD merged).
-- After adding it, write/extend the alias map so every name in the CSVs resolves to a feature in the GeoJSON. Print any unmatched names as a build-time warning.
+## 6. The map data
+An India states boundary file is required at `/data/india_states.geojson`.
+- Must include the current set of states/UTs (Ladakh separate, J&K, and DNH & DD merged).
+- The alias map should ensure every name in the CSVs resolves to a feature in the GeoJSON. Print any unmatched names as a build-time warning.
 
 ## 7. Deliverables
 - Running `npm install && npm run dev` opens the app locally.
