@@ -2,23 +2,19 @@ import { useState, useCallback, useMemo } from 'react';
 import { useGeoData } from './hooks/useGeoData';
 import { useDataStore } from './hooks/useDataStore';
 import { populationConfig, enrolmentConfig, allDatasets } from './config/datasets';
-import type { GenderBreakdown } from './types/data';
 import type { StateFeature } from './types/geo';
 import { IndiaMap } from './components/IndiaMap';
 import { StateDetailPanel } from './components/StateDetailPanel';
 import './App.css';
 
-type GenderKey = keyof GenderBreakdown;
-
 export function App() {
-  const { geoData, error: geoError } = useGeoData();
+  const { geoData, districtData, error: geoError } = useGeoData();
   const { store: populationStore, error: popError } = useDataStore(populationConfig);
   const { store: enrolmentStore, error: enrError } = useDataStore(enrolmentConfig);
 
   // Phase 2 state
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [selectedDatasetId, setSelectedDatasetId] = useState<string>('population');
-  const [selectedGender, setSelectedGender] = useState<GenderKey>('total');
 
   // Map click handler
   const handleStateClick = useCallback((stateName: string) => {
@@ -60,6 +56,7 @@ export function App() {
       <main className="app-main">
         <IndiaMap
           geoData={geoData}
+          districtData={districtData}
           populationStore={populationStore}
           enrolmentStore={enrolmentStore}
           onStateClick={handleStateClick}
@@ -71,10 +68,8 @@ export function App() {
           feature={selectedFeature}
           store={activeStore}
           config={activeConfig}
-          gender={selectedGender}
           selectedDatasetId={selectedDatasetId}
           onDatasetChange={setSelectedDatasetId}
-          onGenderChange={setSelectedGender}
           onClose={handleClosePanel}
         />
       )}

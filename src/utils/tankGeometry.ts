@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 import type { StateFeature } from '../types/geo';
 import type { DataStore, DatasetConfig, GenderBreakdown } from '../types/data';
-import { getValue, computeOtherCategory } from '../data/store';
-import { bandOrder, categoryColors, categoryLabels } from '../config/categoryColors';
+import { getValue } from '../data/store';
+import { tankFillColor } from '../config/categoryColors';
 
 /** Result of projecting a single state feature for the tank visual */
 export interface ProjectedFeature {
@@ -98,62 +98,31 @@ export function computeFillHeight(
 }
 
 /**
- * Build the category bands for the segmented fill.
- * Returns bands ordered bottom-to-top: Other, OBC (if present), SC, ST.
+ * Build a single band for the total fill.
+ * Returns an array with one band covering the full fill height.
  *
  * @param shapeBottomY - the y coordinate of the bottom of the shape bounds
  * @param fillHeight - total fill height (from computeFillHeight)
  */
 export function computeCategoryBands(
   store: DataStore,
-  config: DatasetConfig,
+  _config: DatasetConfig,
   stateName: string,
   gender: GenderKey,
   fillHeight: number,
   shapeBottomY: number,
 ): CategoryBand[] {
-  // Gather raw values for each sub-category
-  const rawValues: { slug: string; value: number }[] = [];
-
-  // "other" is always computed
-  const otherVal = computeOtherCategory(store, config, stateName, gender);
-  if (otherVal !== null && otherVal > 0) {
-    rawValues.push({ slug: 'other', value: otherVal });
-  }
-
-  // Add sub-categories that exist in this dataset's subtractForOther
-  for (const slug of config.subtractForOther) {
-    const val = getValue(store, stateName, slug, gender);
-    if (val !== null && val > 0) {
-      rawValues.push({ slug, value: val });
-    }
-  }
-
-  // Total of all band values (should equal cat_all, but use actual sum for safety)
   const totalVal = getValue(store, stateName, 'cat_all', gender);
   if (!totalVal || totalVal <= 0 || fillHeight <= 0) return [];
 
-  // Sort by bandOrder
-  const ordered = bandOrder
-    .filter((slug) => rawValues.some((r) => r.slug === slug))
-    .map((slug) => rawValues.find((r) => r.slug === slug)!);
-
-  // Build bands from bottom up
-  const bands: CategoryBand[] = [];
-  let currentY = shapeBottomY; // start at shape bottom
-
-  for (const { slug, value } of ordered) {
-    const bandHeight = (value / totalVal) * fillHeight;
-    currentY -= bandHeight; // move up
-    bands.push({
-      slug,
-      label: categoryLabels[slug] ?? slug,
-      color: categoryColors[slug] ?? '#999',
-      value,
-      y: currentY,
-      height: bandHeight,
-    });
-  }
-
-  return bands;
+  return [
+    {
+      slug: 'total',
+      label: 'Total',
+      color: tankFillColor,
+      value: totalVal,
+      y: shapeBottomY - fillHeight,
+      height: fillHeight,
+    },
+  ];
 }

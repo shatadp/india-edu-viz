@@ -74,6 +74,13 @@ body {
   stroke-width: 2;
 }
 
+.district-path {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 0.3;
+  pointer-events: none;
+}
+
 /* Tooltip */
 .tooltip {
   position: fixed;

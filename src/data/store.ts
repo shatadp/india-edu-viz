@@ -1,4 +1,4 @@
-import type { DataStore, GenderBreakdown, DatasetConfig } from '../types/data';
+import type { DataStore, GenderBreakdown } from '../types/data';
 
 type GenderKey = keyof GenderBreakdown;
 
@@ -16,28 +16,4 @@ export function getValue(
   const breakdown = record[categorySlug];
   if (!breakdown) return null;
   return breakdown[gender];
-}
-
-/**
- * Compute the "Other / General" category as:
- *   All categories − sum(subtractCategories)
- * Clamps at 0 for rounding artifacts.
- * Returns null if "All categories" total is null.
- */
-export function computeOtherCategory(
-  store: DataStore,
-  config: DatasetConfig,
-  stateName: string,
-  gender: GenderKey = 'total',
-): number | null {
-  const allVal = getValue(store, stateName, 'cat_all', gender);
-  if (allVal === null) return null;
-
-  let subtracted = 0;
-  for (const slug of config.subtractForOther) {
-    const v = getValue(store, stateName, slug, gender);
-    if (v !== null) subtracted += v;
-  }
-
-  return Math.max(0, allVal - subtracted);
 }

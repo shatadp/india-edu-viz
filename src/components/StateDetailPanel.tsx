@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import type { StateFeature } from '../types/geo';
-import type { DataStore, DatasetConfig, GenderBreakdown } from '../types/data';
+import type { DataStore, DatasetConfig } from '../types/data';
 import { getValue } from '../data/store';
 import { allDatasets } from '../config/datasets';
 import { formatIndianShort, formatIndianComma } from '../utils/indianFormat';
@@ -14,16 +14,12 @@ import { MetricToggle } from './MetricToggle';
 import { TankFillVisual } from './TankFillVisual';
 import { TankLegend } from './TankLegend';
 
-type GenderKey = keyof GenderBreakdown;
-
 interface StateDetailPanelProps {
   feature: StateFeature;
   store: DataStore;
   config: DatasetConfig;
-  gender: GenderKey;
   selectedDatasetId: string;
   onDatasetChange: (id: string) => void;
-  onGenderChange: (g: GenderKey) => void;
   onClose: () => void;
 }
 
@@ -35,10 +31,8 @@ export function StateDetailPanel({
   feature,
   store,
   config,
-  gender,
   selectedDatasetId,
   onDatasetChange,
-  onGenderChange,
   onClose,
 }: StateDetailPanelProps) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -68,8 +62,8 @@ export function StateDetailPanel({
 
   // Compute reference max (max cat_all across all states, excl. All India)
   const referenceMax = useMemo(
-    () => computeReferenceMax(store, gender),
-    [store, gender],
+    () => computeReferenceMax(store, 'total'),
+    [store],
   );
 
   // Compute fill height for this state
@@ -78,11 +72,11 @@ export function StateDetailPanel({
     return computeFillHeight(
       store,
       stateName,
-      gender,
+      'total',
       projected.bounds.height,
       referenceMax,
     );
-  }, [store, stateName, gender, projected, referenceMax]);
+  }, [store, stateName, projected, referenceMax]);
 
   // Compute category bands
   const bands = useMemo(() => {
@@ -92,13 +86,13 @@ export function StateDetailPanel({
       store,
       config,
       stateName,
-      gender,
+      'total',
       fillHeight,
       shapeBottom,
     );
-  }, [store, config, stateName, gender, fillHeight, projected]);
+  }, [store, config, stateName, fillHeight, projected]);
 
-  const totalValue = getValue(store, stateName, 'cat_all', gender);
+  const totalValue = getValue(store, stateName, 'cat_all', 'total');
 
   // Summary text for the header
   const summaryText = totalValue !== null
@@ -135,8 +129,6 @@ export function StateDetailPanel({
           datasets={allDatasets}
           selectedDatasetId={selectedDatasetId}
           onDatasetChange={onDatasetChange}
-          selectedGender={gender}
-          onGenderChange={onGenderChange}
         />
 
         {projected ? (
@@ -154,7 +146,6 @@ export function StateDetailPanel({
         )}
 
         <TankLegend
-          bands={bands}
           totalValue={totalValue}
           totalLabel={config.label}
         />

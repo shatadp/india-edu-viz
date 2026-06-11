@@ -13,22 +13,8 @@ export const populationConfig: DatasetConfig = {
       femaleCol: 'cat_all_female',
       totalCol: 'cat_all_total',
     },
-    {
-      slug: 'sc',
-      label: 'Scheduled Caste',
-      maleCol: 'sc_male',
-      femaleCol: 'sc_female',
-      totalCol: 'sc_total',
-    },
-    {
-      slug: 'st',
-      label: 'Scheduled Tribe',
-      maleCol: 'st_male',
-      femaleCol: 'st_female',
-      totalCol: 'st_total',
-    },
   ],
-  subtractForOther: ['sc', 'st'],
+  subtractForOther: [],
 };
 
 export const enrolmentConfig: DatasetConfig = {
@@ -44,29 +30,8 @@ export const enrolmentConfig: DatasetConfig = {
       femaleCol: 'cat_all_female',
       totalCol: 'cat_all_total',
     },
-    {
-      slug: 'sc',
-      label: 'Scheduled Caste',
-      maleCol: 'sc_male',
-      femaleCol: 'sc_female',
-      totalCol: 'sc_total',
-    },
-    {
-      slug: 'st',
-      label: 'Scheduled Tribe',
-      maleCol: 'st_male',
-      femaleCol: 'st_female',
-      totalCol: 'st_total',
-    },
-    {
-      slug: 'obc',
-      label: 'Other Backward Class',
-      maleCol: 'obc_male',
-      femaleCol: 'obc_female',
-      totalCol: 'obc_total',
-    },
   ],
-  subtractForOther: ['sc', 'st', 'obc'],
+  subtractForOther: [],
 };
 
 export const allDatasets: DatasetConfig[] = [populationConfig, enrolmentConfig];

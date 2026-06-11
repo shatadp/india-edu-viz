@@ -1,11 +1,13 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import * as d3 from 'd3';
 import type { IndiaFeatureCollection, StateFeature } from '../types/geo';
+import type { DistrictFeatureCollection } from '../hooks/useGeoData';
 import type { DataStore } from '../types/data';
 import { Tooltip } from './Tooltip';
 
 interface IndiaMapProps {
   geoData: IndiaFeatureCollection;
+  districtData: DistrictFeatureCollection | null;
   populationStore: DataStore | null;
   enrolmentStore: DataStore | null;
   onStateClick?: (stateName: string) => void;
@@ -14,7 +16,7 @@ interface IndiaMapProps {
 const MAP_WIDTH = 700;
 const MAP_HEIGHT = 800;
 
-export function IndiaMap({ geoData, populationStore, enrolmentStore, onStateClick }: IndiaMapProps) {
+export function IndiaMap({ geoData, districtData, populationStore, enrolmentStore, onStateClick }: IndiaMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [tooltip, setTooltip] = useState<{
     stateName: string;
@@ -39,9 +41,21 @@ export function IndiaMap({ geoData, populationStore, enrolmentStore, onStateClic
 
     const pathGen = d3.geoPath().projection(projection);
 
-    // Clear previous paths
+    // Clear previous layers
+    svg.select('g.districts').remove();
     svg.select('g.states').remove();
 
+    // Render district boundaries first (behind states)
+    if (districtData) {
+      const dg = svg.append('g').attr('class', 'districts');
+      dg.selectAll('path')
+        .data(districtData.features)
+        .join('path')
+        .attr('d', (d) => pathGen(d) ?? '')
+        .attr('class', 'district-path');
+    }
+
+    // Render state boundaries on top
     const g = svg.append('g').attr('class', 'states');
 
     g.selectAll<SVGPathElement, StateFeature>('path')
@@ -77,7 +91,7 @@ export function IndiaMap({ geoData, populationStore, enrolmentStore, onStateClic
         console.log(`[click] ${name}`);
         onStateClick?.(name);
       });
-  }, [geoData, onStateClick]);
+  }, [geoData, districtData, onStateClick]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
