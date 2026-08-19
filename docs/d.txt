@@ -1,0 +1,19 @@
+Here is draft text for each field. I have kept it specific enough to satisfy reviewers but general enough not to overcommit you.
+
+**Short description**
+
+> Request for an AWS environment with a single EC2 instance to host Apache Jena Fuseki, an approved FOSS SPARQL server (Apache License 2.0), accessible for queries from within the RTX network.
+
+**Full description**
+
+> We request provisioning of an AWS environment containing one EC2 instance to host Apache Jena Fuseki, an open source SPARQL server and triple store from the Apache Software Foundation (Apache License 2.0, already in use at Raytheon). Fuseki ships as a self-contained Java application with a minimal footprint: it requires only a Java runtime, no installer, no elevated privileges, and no additional middleware.
+>
+> The instance will host RDF knowledge graphs supporting our ontology and semantic AI work and will expose a standard SPARQL HTTP endpoint. Access is required from within the RTX network only, so that authorized users and applications across business units can query the endpoint from their workstations. No external or public internet exposure is required. Anticipated resource needs are modest: a single general purpose EC2 instance (for example t3.xlarge or m5.xlarge class), EBS storage for datasets, and standard network security group configuration restricting inbound traffic to RTX internal address ranges.
+
+**Business justification**
+
+> Our ontology and knowledge graph initiatives currently run Fuseki locally on individual workstations. This limits collaboration: datasets cannot be shared, queried, or validated by colleagues on other programs or business units, and every consumer must maintain a duplicate local copy. A single centrally hosted instance provides one authoritative endpoint that teams across Collins Aerospace, Pratt & Whitney, and Raytheon can query from anywhere on the RTX network, eliminating duplication and enabling cross business unit reuse of shared ontologies and knowledge graphs.
+>
+> The cost and risk profile is low: one small EC2 instance, an approved permissively licensed FOSS component with existing usage precedent at Raytheon, and network access confined to RTX internal ranges. The capability directly supports active digital thread, data integration, and semantic AI efforts, and establishes shared semantic infrastructure that would otherwise require redundant effort on each program.
+
+A few things worth checking before you submit: whether your form expects a specific instance size and monthly cost estimate (a t3.xlarge runs roughly $120 per month on demand, less with reserved pricing), whether data classification needs to be stated (if any datasets could touch export controlled content, say so upfront since it may route you to GovCloud), and whether authentication is expected (Fuseki supports basic auth and can sit behind a reverse proxy if reviewers ask about access control). Want me to tighten any section or add a security posture paragraph?
