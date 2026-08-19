@@ -1,0 +1,7 @@
+Team, sharing an interesting update from the Digital Ecosystem Summit.
+
+MTConnect is now working with the Industrial Ontologies Foundry (IOF). William Sobel, who has been the Chief Architect of the MTConnect standard for almost twenty years, is leading ontology work in IOF focused on manufacturing systems and machine data. Joshua Ki from Lockheed Martin is also part of this working group.
+
+The main takeaway from my conversation with Sobel: the MTConnect community now sees that MTConnect is only a data model. To connect it with anything else, like ERP, MES, quality, supply chain, or digital twins, they need an ontology on top of it. This is the same gap we are solving with our knowledge graph work, so the industry is moving in the same direction as us.
+
+Sobel reached out to me directly, explained the whole effort, and clearly said RTX should become a member and support this work. Lockheed Martin is already active in several IOF working groups, so we have a peer benchmark here.
