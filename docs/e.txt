@@ -1,0 +1,11 @@
+**Business justification**
+
+- RTX has no enterprise-wide knowledge graph and no shared environment to demonstrate or evaluate semantic reasoning technology.
+- Multiple teams across Collins, Pratt & Whitney, and Raytheon are interested in ontologies and knowledge graphs, but have no way to see the technology in action.
+- This single EC2 instance hosting Fuseki will serve exclusively as a shared demo and proof-of-concept environment for small starter projects.
+- No production workloads or production data will run on this instance.
+- Purpose: prove the value of ontologies and semantic reasoning through multiple small POCs before any larger investment.
+- Low cost, low risk: one small instance, approved FOSS (Apache 2.0, already in use at Raytheon), access restricted to the RTX network.
+- Successful POCs de-risk and inform future decisions on enterprise-scale knowledge graph infrastructure.
+
+Want the short and full descriptions tightened into bullets too?
