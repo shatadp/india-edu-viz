@@ -1,0 +1,12 @@
+**Short description**
+
+> Single EC2 instance hosting Apache Jena Fuseki (approved FOSS, Apache 2.0) as a shared demo and proof-of-concept environment for ontology and knowledge graph technology, queryable from within the RTX network.
+
+**Full description**
+
+- Request: one AWS EC2 instance hosting Apache Jena Fuseki, an open source SPARQL server and triple store (Apache License 2.0, already in use at Raytheon).
+- Fuseki is lightweight: a self-contained Java application requiring only a Java runtime — no installer, no elevated privileges, no middleware.
+- The instance will host small RDF knowledge graphs and expose a standard SPARQL HTTP endpoint for demos and proof-of-concept projects.
+- Access limited to the RTX internal network only; no public internet exposure.
+- Modest resources: one general purpose instance (e.g., t3.xlarge class), EBS storage for datasets, security groups restricting inbound traffic to RTX ranges.
+- Used exclusively for demonstrations and small POCs — no production workloads or production data.
