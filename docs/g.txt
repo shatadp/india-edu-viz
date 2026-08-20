@@ -1,0 +1,11 @@
+**How will it be accessed at RTX?**
+
+> Fuseki will run in headless mode, with no browser interface. It will only expose a SPARQL query endpoint over HTTP within the RTX internal network. End users will never connect to Fuseki directly. Instead, dashboards and web applications hosted on other RTX servers will query Fuseki in the background as their data source. Users interact with those dashboards, not with Fuseki. Administration, such as loading data and creating datasets, will be done by the administrator over SSH. Network security groups will restrict all inbound traffic to RTX internal IP ranges. There will be no public internet exposure.
+
+**How many concurrent users are we expecting?**
+
+> Since users do not connect to Fuseki directly, the load comes from a small number of client applications. We expect 2 to 5 dashboards or web applications querying the endpoint, which translates to roughly 5 to 10 concurrent queries at peak, for example during a live demo. Typical usage will be lower, with only 1 to 3 queries running at any given time. This is a light, intermittent load, well within the capacity of a single instance.
+
+**What is the size of the dataset we plan on having?**
+
+> Small. Each proof-of-concept knowledge graph will range from a few thousand to a few million RDF triples. Total storage across all datasets is expected to stay under 10 GB. We are requesting 50 to 100 GB of disk storage to provide comfortable headroom for the life of the environment.
